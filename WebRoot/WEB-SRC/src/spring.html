@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Dashboard">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>爬虫文章管理系统</title>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="css/blue.css">
+    <link rel="stylesheet" type="text/css" href="css/inputFileStyle.css">
+
+    <script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+    <script type="text/javascript" src="js/angular.js"></script>
+    <script type="text/javascript" src="js/angular-cookies.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/bootstrapCtrl.js"></script>
+
+    <script type="text/javascript" src="../ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="../ueditor/ueditor.all.js"></script>
+    <script type="text/javascript" src="js/angular-ueditor.js"></script>
+
+    <script type="text/javascript" src="js/dashboard/controllers/spring/spring-ctrl.js"></script>
+    <script type="text/javascript" src="js/dashboard/controllers/back/tm.pagination.js"></script>
+    <style>
+        .page-list .pagination {float:left;}
+        .page-list .pagination span {cursor: pointer;}
+        .page-list .pagination .separate span{cursor: default; border-top:none;border-bottom:none;}
+        .page-list .pagination .separate span:hover {background: none;}
+        .page-list .page-total {float:left; margin: 25px 20px;}
+        .page-list .page-total input, .page-list .page-total select{height: 26px; border: 1px solid #ddd;}
+        .page-list .page-total input {width: 40px; padding-left:3px;}
+        .page-list .page-total select {width: 50px;}
+    </style>
+</head>
+<body ng-controller="springCtrl">
+<div id="page-wrapper" ng-class="{'active': toggle}" class="active">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar" role="tablist">
+            <li class="sidebar-main">
+                <a ng-href="#" ng-click="toggleSidebar()">
+                    爬虫文章管理系统
+                    <span class="menu-icon glyphicon glyphicon-transfer"></span>
+                </a>
+            </li>
+            <li class="sidebar-title"><span>导航</span></li>
+            <!--导航条-->
+            <li role="presentation" class="sidebar-list" id="generalCrawlerSidebarID">
+                <a ng-href="#generalView" role="tab" data-toggle="tab" ng-click="changeCurPage('一览')">一览 <span class="menu-icon glyphicon glyphicon-eye-open"></span></a>
+            </li>
+            <!--导航条结束-->
+            <li class="sidebar-title separator"><span>快速链接</span></li>
+            <li class="sidebar-list">
+                <a href="http://www.baidu.com" target="_blank">百度 <span class="menu-icon glyphicon glyphicon-new-window"></span></a>
+            </li>
+            <li class="sidebar-list">
+                <a href="http://www.sina.com.cn" target="_blank">新浪 <span class="menu-icon glyphicon glyphicon-new-window"></span></a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="col-xs-4">
+                <a href="https://github.com/Ehesp/Responsive-Dashboard" target="_blank">
+                    模板
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a href="#" target="_blank">
+                    关于
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a href="#">
+                    支持
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="content-wrapper">
+        <div class="page-content">
+            <div class="row header">
+                <div class="col-xs-12">
+                    <div class="meta pull-left">
+                        <div class="page">
+                            {{curPage}}
+                        </div>
+                        <div class="breadcrumb-links">
+                            文章管理系统 / {{curPage}}
+                        </div>
+                    </div>
+                    <div class="user pull-right">
+                        <div class="item dropdown">
+                            <a ng-href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                <img src="img/avatar.jpg">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">
+                                    QK
+                                </li>
+                                <li class="divider"></li>
+                                <li class="link">
+                                    <a href="#">
+                                        概况
+                                    </a>
+                                </li>
+                                <li class="link">
+                                    <a href="#">
+                                        菜单1
+                                    </a>
+                                </li>
+                                <li class="link">
+                                    <a href="#">
+                                        菜单2
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li class="link">
+                                    <a href="#">
+                                        登出
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item dropdown">
+                            <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                <i class="glyphicon glyphicon-bell"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">
+                                    通知
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#">服务器关闭</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row tab-content">
+                <div role="tabpanel" class="tab-pane active" id="generalSpring">
+                    <div class="row">
+                        <div class="col-md-1 col-md-offset-2">
+                            <button type="button" class="btn btn-info" ng-click="testLog()">test</button>
+                        </div>
+                        <div class="col-md-1 col-md-offset-10">
+                            <button type="button" class="btn btn-success" ng-click="refreshSpringData()"><span class="glyphicon glyphicon-refresh"></span></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="panel panel-success">
+                                <div class="panel-body">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <td>标题</td>
+                                            <td>时间</td>
+                                            <td>来源</td>
+                                            <td>关键词</td>
+                                            <td>评论数</td>
+                                            <td>字数</td>
+                                            <td>摘要</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="dataObj in springData">
+                                            <td></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(function () { $("[data-toggle='tooltip']").tooltip(); });
+</script>
+</body>
+</html>
